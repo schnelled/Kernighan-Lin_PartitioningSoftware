@@ -1,6 +1,6 @@
 # Kernighan-Lin_PartitioningSoftware #
 
-Kernighan-Lin heuristic algorithm for finding partitions of graphs implented in python.
+Kernighan-Lin heuristic algorithm for finding partitions of graphs implented in C.
 
 The algorithm has important applications in the layout of digital circuits and components in VLSI.
 
@@ -11,7 +11,7 @@ vertices in partition #1 and (1+n, ..., 2n) vertices in partition #2.
 
 The project will be completed in 3 steps:
 
-### Step 1(step1_KL.py): Format of the Input & Output ###
+### Step 1(step1_KL.c): Format of the Input & Output ###
 
 Program will read an input file and print out a partition in a specified format
 
@@ -20,13 +20,13 @@ Program will read an input file and print out a partition in a specified format
   - [ ] **B.** As the starting partition, assign (1, ..., n) vertices in partition #1 & (n+1, ..., 2n)
   vertices in partition #2.
 
-### Step 2(step2_KL.py): Expand step 1 to include the following ###
+### Step 2(step2_KL.c): Expand step 1 to include the following ###
 
   - [ ] **A.** Calculate the cost of a partition.
   
   - [ ] **B.** Update your output formate to show "cost of the partition".
 
-### Step 3(step3_KL.py & KL.py): Expand step 2 to include the following ###
+### Step 3(step3_KL.c & KL.c): Expand step 2 to include the following ###
 
   - [ ] **A.** Calculate the internal & external costs for all of the vertices in both partitions.
   
