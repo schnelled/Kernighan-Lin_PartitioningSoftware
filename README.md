@@ -1,6 +1,6 @@
 # Kernighan-Lin_PartitioningSoftware #
 
-Kernighan-Lin heuristic algorithm for finding partitions of graphs implented in C.
+Kernighan-Lin heuristic algorithm for finding partitions of graphs implented in C++.
 
 The algorithm has important applications in the layout of digital circuits and components in VLSI.
 
