@@ -1,6 +1,6 @@
 IDIR=../include
 CC=g++
-CFLAGS=-I$(DIR)
+CFLAGS=-I$(IDIR)
 
 UNAME := $(shell uname)
 
