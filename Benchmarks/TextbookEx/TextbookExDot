@@ -1,0 +1,8 @@
+digraph TextbookEx{
+	5 -> 6 [dir="none"]
+	5 -> 4 [dir="none"]
+	6 -> 4 [dir="none"]
+	4 -> 2 [dir="none"]
+	2 -> 3 [dir="none"]
+	2 -> 1 [dir="none"]
+}

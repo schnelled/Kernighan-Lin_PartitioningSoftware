@@ -1,0 +1,9 @@
+digraph HomeworkEx {
+	1 -> 5 [dir="none"]
+	2 -> 5 [dir="none"]
+	3 -> 6 [dir="none"]
+	4 -> 6 [dir="none"]
+	5 -> 7 [dir="none"]
+	6 -> 7 [dir="none"]
+	7 -> 8 [dir="none"]
+}
