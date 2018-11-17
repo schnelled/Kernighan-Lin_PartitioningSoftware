@@ -1,6 +1,6 @@
 IDIR=../include
 CC=g++
-CFLAGS=I$(DIR)
+CFLAGS=-I$(DIR)
 
 UNAME := $(shell uname)
 
@@ -9,10 +9,10 @@ CFLAGS+=-DLINUX
 endif
 
 Step1_KL: step1_KL.cpp
-  make clean
-  $(CC) -o step1_KL.o step1_KL.cpp $(CFLAGS)
+	make clean
+	$(CC) -o step1_KL.o step1_KL.cpp $(CFLAGS)
   
 .PHONY: clean
 
 clean:
-  rm -f step1_KL.o
+	rm -f step1_KL.o
