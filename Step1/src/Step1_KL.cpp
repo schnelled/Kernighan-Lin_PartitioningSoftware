@@ -26,16 +26,6 @@ int main(int argc, char* argv[])
 		//errorHandler("Usage Error: ", argv[0], 1);
 	}
 
-	//Declare local variables
-	ifstream file;
-	string line;
-	int currentNum;
-	int totalNodes;
-	int totalEdges;
-	int idNum = 0;
-	bool infoSet = false;
-	bool firstLine = true;
-
 	//Open the benchmark file
 	G.openBenchmark(argv[1]);
 
@@ -47,45 +37,6 @@ int main(int argc, char* argv[])
 
 	//Display the total number of nodes & edges in the graph
 	G.displayInfo();
-
-	//Read each line from the benchmark file
-	while (getline(file, line)) {
-		//Add newline to current line
-		line += '\n';
-
-		//Check if current line is a node
-		if (firstLine == false) {
-			//Display the unique ID of the current node
-			cout << "Node: " << idNum << endl;
-		}
-
-		//Loop through the characters in the string
-		for (int i = 0; i < line.size(); i++) {
-			//Check if current character is a number
-			if (isdigit(line[i]) && (firstLine == false)) {
-				//Convert the character to an integer
-				currentNum = (int)line[i];
-
-				//Display the integer
-				cout << currentNum - 48;
-			}
-
-			//Check for space character
-			if (line[i] == ' ') {
-				cout << ' ';
-			}
-
-			//Check for newline character
-			if (line[i] == '\n') {
-				cout << endl;
-			}
-		}
-		//Set the value of first line to false
-		firstLine = false;
-
-		//Increment the node ID
-		idNum++;
-	}
 
 	//Close the benchmark file
 	G.closeBenchmark();
