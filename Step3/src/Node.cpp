@@ -11,6 +11,7 @@ Node::Node()
 	partition = 0;
 	I = 0;
 	E = 0;
+	swapped = false;
 }
 
 //Deconstructor
@@ -122,4 +123,16 @@ void Node::setD()
 {
 	//Set the D value for the node
 	D = E - I;
+}
+
+/*---------------------------------------------------------------
+Class function:	getD (Node class)
+Input(s):		None
+Output:			int - D value for the node.
+Description:	Obtain the D value from the node.
+---------------------------------------------------------------*/
+int Node::getD()
+{
+	//Return the D value
+	return D;
 }

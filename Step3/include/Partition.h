@@ -13,6 +13,9 @@ public:
 	void setNodeDegree(int, int, int*);
 	int costFunction();
 	void setIE_Cost();
+	int getD_Value(int);
+	int getNodeID(int);
+	int sharedEdge(int, int);
 private:
 	int partitionNum;
 	int nodeNum;

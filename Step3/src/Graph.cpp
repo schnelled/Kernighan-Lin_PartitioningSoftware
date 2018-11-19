@@ -235,9 +235,66 @@ Definition:		Calculates the interation and displays largest gains from
 -------------------------------------------------------------------------*/
 void Graph::calcInteration()
 {
+	//Declare local variables
+	int D1, D2;
+	int ID1, ID2;
+	int swap1, swap2;
+	int shared;
+	int gain;
+	int maxGain;
+	bool first = true;
+
 	//Calculate the internal & external cost of each node
 	partition_1->setIE_Cost();
 	partition_2->setIE_Cost();
+
+	//Loop through partition one to obtain IDs
+	for (int i = 0; i < (totalNodes / 2); i++) {
+
+		//Obtain the current node ID from partition one
+		ID1 = partition_1->getNodeID(i);
+
+		//Obtain the D value of the node from partition one
+		D1 = partition_1->getD_Value(ID1);
+
+		//Loop through partition two to obtain IDs
+		for (int j = 0; j < (totalNodes / 2); j++) {
+
+			//Obtain the current node ID from partition two
+			ID2 = partition_2->getNodeID(j);
+
+			//Obtain the D value of the node from partition two
+			D2 = partition_2->getD_Value(ID2);
+
+			//Check to see if the nodes share an edge
+			shared = partition_1->sharedEdge(ID1, ID2);
+
+			//Check if this is the first time through the interation
+			if (first) {
+				//Caclulate the gain
+				gain = D1 + D2 - (2 * shared);
+
+				//Set the value of max gain
+				maxGain = gain;
+
+				//Set first equal to false
+				first = false;
+			}
+			else
+			{
+				//Caclulate the gain
+				gain = D1 + D2 - (2 * shared);
+
+				//Check if the new gain is better
+				if (gain > maxGain) {
+					//Set the value of max gain
+					maxGain = gain;
+				}
+			}
+		}
+	}
+	//Display the largest gain
+	cout << "The largest gain is: " << maxGain << endl;
 }
 
 /*-------------------------------------------------------------------------

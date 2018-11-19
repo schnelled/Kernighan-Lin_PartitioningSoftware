@@ -178,3 +178,69 @@ void Partition::setIE_Cost()
 		nodes[i].setD();
 	}
 }
+
+/*------------------------------------------------------------------------------
+Class Function:	getD_Value (class Partition)
+Input(s):		int id - Node's id
+Output:			void (none)
+Definition:		Obtains the D value from the node
+------------------------------------------------------------------------------*/
+int Partition::getD_Value(int id)
+{
+
+	//Loop through the nodes in the partition
+	for (int i = 0; i < nodeNum; i++) {
+		
+		//Check if the current node matches the id
+		if (id == nodes[i].getNodeID()) {
+			//Return the node's D value
+			return nodes[i].getD();
+		}
+	}
+
+	//Return zero on falure
+	return 0;
+}
+
+/*------------------------------------------------------------------------------
+Class Function:	getNodeID (class Partition)
+Input(s):		int i - Index into the node array
+Output:			int - The id of the node
+Definition:		Obtains the D value from the node
+------------------------------------------------------------------------------*/
+int Partition::getNodeID(int i)
+{
+	//Return the node's ID
+	return nodes[i].getNodeID();
+}
+
+/*------------------------------------------------------------------------------
+Class Function:	sharedEdge (class Partition)
+Input(s):		int id1 - The ID of the node
+				int id2 - The ID of the node
+Output:			int - Edge shared
+Definition:		Returns 1 if the nodes share an edge & returns 0 if nodes don't
+	share an edge.
+------------------------------------------------------------------------------*/
+int Partition::sharedEdge(int id1, int id2)
+{
+	//Loop through the nodes in the partition
+	for (int i = 0; i < nodeNum; i++) {
+		
+		//Check if the current node matches the id
+		if (id1 == nodes[i].getNodeID()) {
+			
+			//Loop through the connection list of the current node
+			for (int j = 0; j < nodes[i].getDegree(); j++) {
+				
+				//Check if the nodes share an edge
+				if (id2 == nodes[i].getConnection(j)) {
+					//Edge is shared return one
+					return 1;
+				}
+			}
+		}
+	}
+	//Edge not shared return zero
+	return 0;
+}

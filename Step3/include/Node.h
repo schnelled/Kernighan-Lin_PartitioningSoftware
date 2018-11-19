@@ -12,6 +12,7 @@ public:
 	int getDegree();
 	void setIE(int, int);
 	void setD();
+	int getD();
 
 private:
 	int id;
@@ -21,4 +22,5 @@ private:
 	int I;
 	int E;
 	int D;
+	bool swapped;
 };
