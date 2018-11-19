@@ -8,10 +8,12 @@ public:
 	void nodeSetup(int, int);
 	int getNodeID();
 	void setDegree(int, int*);
+	int getConnection(int);
+	int getDegree();
 
 private:
-	unsigned int id;
-	unsigned int degrees;
-	unsigned int* connections;
-	unsigned int partition;
+	int id;
+	int degrees;
+	int* connections;
+	int partition;
 };

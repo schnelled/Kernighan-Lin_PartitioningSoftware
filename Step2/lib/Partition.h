@@ -11,6 +11,7 @@ public:
 	void addNode(int, int);
 	void displayNodes();
 	void setNodeDegree(int, int, int*);
+	int costFunction();
 private:
 	int partitionNum;
 	int nodeNum;

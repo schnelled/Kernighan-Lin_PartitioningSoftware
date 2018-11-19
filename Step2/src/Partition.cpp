@@ -79,3 +79,46 @@ void Partition::setNodeDegree(int i, int degrees, int* connections)
 	//Add the number of degrees to the node
 	nodes[i].setDegree(degrees, connections);
 }
+
+/*------------------------------------------------------------------------------
+Class Function:	costFunction (class Partition)
+Input(s):		None
+Output:			int - The cost of the partition
+Definition:		Calculates the cost of the partition.
+------------------------------------------------------------------------------*/
+int Partition::costFunction()
+{
+	//Declare local variables
+	int cost = 0;
+	bool found;
+	
+	//Loop through the set of nodes in the partition
+	for (int i = 0; i < nodeNum; i++) {
+		//Set found equal to false
+		found = false;
+		
+		//Loop through the current ID's shared connection list
+		for (int j = 0; j < nodes[i].getDegree(); j++) {
+
+			//Loop through the set of nodes in the partition
+			for (int k = 0; k < nodeNum; k++) {
+
+				//Check if other node's ID is equal to the connection ID
+				if (nodes[i].getConnection(j) == nodes[k].getNodeID()) {
+					//Change found to true
+					found = true;
+				}
+			}
+		}
+		//Check if match was not found
+		if (!found) {
+			//Increament the cost
+			cost++;
+		}
+
+		//Reset found to false
+		found = false;
+	}
+	//Return the cost of the partition
+	return cost;
+}

@@ -35,11 +35,11 @@ int main(int argc, char* argv[])
 	//Add nodes to the partition
 	G.addNodes();
 
-	//Display the initial setup information
-	G.displayInfo();
-
 	//Add the degree and adjacent edge information to the node
 	G.addNodeInfo();
+
+	//Display the initial setup information
+	G.displayInfo();
 
 	//Close the benchmark file
 	G.closeBenchmark();

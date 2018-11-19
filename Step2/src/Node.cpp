@@ -60,11 +60,35 @@ void Node::setDegree(int degreeNum, int* shared)
 	degrees = degreeNum;
 
 	//Initialize the integer connections array
-	connections = new unsigned int[degreeNum];
+	connections = new int[degreeNum];
 
 	//Loop and setup the connections array
 	for (int i = 0; i < degreeNum; i++) {
 		//Add the connection to the array
 		connections[i] = shared[i];
 	}
+}
+
+/*---------------------------------------------------------------
+Class function:	getConnection (Node class)
+Input(s):		int i - Index of the connection array
+Output:			int - ID of the node sharing an edge
+Description:	Obtains the ID of the current shared edge.
+---------------------------------------------------------------*/
+int Node::getConnection(int i)
+{
+	//Return the ID of the node that shares the edge
+	return connections[i];
+}
+
+/*---------------------------------------------------------------
+Class function:	getDegree (Node class)
+Input(s):		Node
+Output:			int - The number of degrees the node has.
+Description:	Obtains number of degrees for the current node.
+---------------------------------------------------------------*/
+int Node::getDegree()
+{
+	//Return the number of degrees
+	return degrees;
 }

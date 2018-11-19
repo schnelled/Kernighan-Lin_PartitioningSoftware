@@ -221,6 +221,9 @@ void Graph::displayInfo()
 
 	//Display the nodes in partition two
 	partition_2->displayNodes();
+
+	//Display the cost of the partition
+	cout << "Cost of the partition = " << partition_1->costFunction() << endl;
 }
 
 /*-------------------------------------------------------------------------
