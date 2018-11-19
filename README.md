@@ -15,16 +15,16 @@ The project will be completed in 3 steps:
 
 Program will read an input file and print out a partition in a specified format
 
-  - [ ] **A.** Each input file contains 2n vertices.
+  - [x] **A.** Each input file contains 2n vertices.
   
-  - [ ] **B.** As the starting partition, assign (1, ..., n) vertices in partition #1 & (n+1, ..., 2n)
+  - [x] **B.** As the starting partition, assign (1, ..., n) vertices in partition #1 & (n+1, ..., 2n)
   vertices in partition #2.
 
 ### Step 2(step2_KL.cpp): Expand step 1 to include the following ###
 
-  - [ ] **A.** Calculate the cost of a partition.
+  - [x] **A.** Calculate the cost of a partition.
   
-  - [ ] **B.** Update your output formate to show "cost of the partition".
+  - [x] **B.** Update your output formate to show "cost of the partition".
 
 ### Step 3(step3_KL.cpp & KL.cpp): Expand step 2 to include the following ###
 
