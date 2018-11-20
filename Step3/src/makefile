@@ -8,9 +8,9 @@ ifeq ($(UNAME), Linux)
 CFLAGS+=-DLINUX
 endif
 
-Step2_KL: Step2_KL.cpp Graph.cpp Partition.cpp Node.cpp
+Step3_KL: Step3_KL.cpp Graph.cpp Partition.cpp Node.cpp
 	make clean
-	$(CC) -o Step2_KL.o Step2_KL.cpp Graph.cpp Partition.cpp Node.cpp $(CFLAGS)
+	$(CC) -o Step3_KL.o Step3_KL.cpp Graph.cpp Partition.cpp Node.cpp $(CFLAGS)
 	
 .PHONY: clean
 
