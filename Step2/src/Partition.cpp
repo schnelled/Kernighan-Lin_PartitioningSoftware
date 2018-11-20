@@ -94,11 +94,11 @@ int Partition::costFunction()
 	
 	//Loop through the set of nodes in the partition
 	for (int i = 0; i < nodeNum; i++) {
-		//Set found equal to false
-		found = false;
 		
 		//Loop through the current ID's shared connection list
 		for (int j = 0; j < nodes[i].getDegree(); j++) {
+			//Set found equal to false
+			found = false;
 
 			//Loop through the set of nodes in the partition
 			for (int k = 0; k < nodeNum; k++) {
@@ -107,15 +107,15 @@ int Partition::costFunction()
 				if (nodes[i].getConnection(j) == nodes[k].getNodeID()) {
 					//Change found to true
 					found = true;
+					break;
 				}
 			}
+			//Check if match was not found
+			if (!found) {
+				//Increament the cost
+				cost++;
+			}
 		}
-		//Check if match was not found
-		if (!found) {
-			//Increament the cost
-			cost++;
-		}
-
 		//Reset found to false
 		found = false;
 	}

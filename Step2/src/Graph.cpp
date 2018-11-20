@@ -199,6 +199,10 @@ void Graph::setGraphInfo(char* arg)
 		errorHandler(2, arg);
 	}
 
+	//Free the memory from the temp arrays
+	delete[] tempEdgeArray;
+	delete[] tempNodeArray;
+
 	//Declare partition one & partition two
 	partition_1 = new Partition(totalNodes / 2, 1);
 	partition_2 = new Partition(totalNodes / 2, 2);
@@ -256,8 +260,12 @@ void Graph::addNodeInfo()
 	int lineIndex = 0;
 	int intIndex = 0;
 	bool partition1 = true;
+	bool digit = true;
 	int position1 = 0;
 	int position2 = position1;
+	int currentDigit;
+	int multiplier;
+	int subMult;
 	int* temp;
 
 	//Read each line of the benchmark file
@@ -283,13 +291,56 @@ void Graph::addNodeInfo()
 
 		//Loop through the line and count the number of adjacent edges
 		for (int i = 0; i < line.size(); i++) {
-			//Check if the current character is a digit
-			if (isdigit(line[i])) {
-				//Add the connection to the temp array
-				temp[intIndex] = (int)line[i] - 48;
+			if(line[i] != '\t') {
+				//Check if the current character is a digit
+				if (isdigit(line[i])) {
+					//Increment position one
+					position1++;
+				}
+				//Otherwise on a digit
+				else {
+					//Calculate the length of the current digit
+					multiplier = position1 - position2;
 
-				//Increament the integer index
-				intIndex++;
+					//Calculate the subMult
+					subMult = multiplier - 1;
+
+					//Set current digit to zero
+					currentDigit = 0;
+
+					//Loop to obtain the digit
+					for (int j = position2; j < position1; j++) {
+						//Check if the multiplier is equal to zero
+						if (subMult == 0) {
+							//Obtain the current digit
+							currentDigit = (int)line[j] - 48;
+						}
+						else {
+							//Check if last digit
+							if (j + 1 == position1) {
+								//Add the current digit
+								currentDigit = currentDigit + ((int)line[j] - 48);
+							}
+							else {
+								//Add the current digit
+								currentDigit = currentDigit + ((int)line[j] - 48) * (10 * (multiplier - subMult));
+							}
+						}
+						//Increment subMult
+						subMult++;
+					}
+					//Add the connection value to the temp array
+					temp[intIndex] = currentDigit;
+
+					//Increament the integer index
+					intIndex++;
+
+					//Increment position one
+					position1++;
+
+					//Set position two equal to position one
+					position2 = position1;
+				}
 			}
 		}
 
@@ -310,9 +361,11 @@ void Graph::addNodeInfo()
 			partition_2->setNodeDegree(lineIndex - (totalNodes/2), degreeCount, temp);
 		}
 
-		//Reset the counters and increment unique ID number
+		//Cleanup counters and local variables
 		degreeCount = 0;
 		intIndex = 0;
+		position1 = 0;
+		position2 = position1;
 		lineIndex++;
 
 		//Delete the allocated memory
