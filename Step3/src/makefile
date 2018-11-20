@@ -15,4 +15,4 @@ Step3_KL: Step3_KL.cpp Graph.cpp Partition.cpp Node.cpp
 .PHONY: clean
 
 clean:
-	rm -f Step2_KL.o
+	rm -f Step3_KL.o
