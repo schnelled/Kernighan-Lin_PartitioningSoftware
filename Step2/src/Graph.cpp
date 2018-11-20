@@ -260,7 +260,6 @@ void Graph::addNodeInfo()
 	int lineIndex = 0;
 	int intIndex = 0;
 	bool partition1 = true;
-	bool digit = true;
 	int position1 = 0;
 	int position2 = position1;
 	int currentDigit;
