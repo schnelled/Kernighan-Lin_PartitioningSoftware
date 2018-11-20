@@ -256,6 +256,8 @@ void Graph::addNodeInfo()
 	int lineIndex = 0;
 	int intIndex = 0;
 	bool partition1 = true;
+	int position1 = 0;
+	int position2 = position1;
 	int* temp;
 
 	//Read each line of the benchmark file
@@ -266,13 +268,17 @@ void Graph::addNodeInfo()
 		//Loop through the line and count the number of adjacent edges
 		for (int i = 0; i < line.size(); i++) {
 			//Check if the current character is a digit
-			if (isdigit(line[i])) {
-				//Increament the degree count for the current node
-				degreeCount++;
+			if (!isdigit(line[i])) {
+
+				//Check to make sure current character isn't a tab
+				if (line[i] != '\t') {
+					//Increament the degree count for the current node
+					degreeCount++;
+				}
 			}
 		}
 
-		//Initialize the temp array of connections
+		//Allocate memory to the temp array of connections
 		temp = new int[degreeCount];
 
 		//Loop through the line and count the number of adjacent edges
@@ -308,6 +314,9 @@ void Graph::addNodeInfo()
 		degreeCount = 0;
 		intIndex = 0;
 		lineIndex++;
+
+		//Delete the allocated memory
+		delete[] temp;
 	}
 }
 
