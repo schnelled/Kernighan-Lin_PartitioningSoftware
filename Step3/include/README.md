@@ -1,1 +1,1 @@
-Files to be included to Step1 of the project
+Files to be included to Step3 of the project
