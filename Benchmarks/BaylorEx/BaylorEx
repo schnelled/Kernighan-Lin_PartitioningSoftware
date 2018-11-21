@@ -1,0 +1,10 @@
+digraph BaylorEx {
+	1 -> 6 [color = "black" dir="none"]
+	1 -> 7 [color = "black" dir="none"]
+	2 -> 7 [color = "black" dir="none"]
+	2 -> 8 [color = "black" dir="none"]
+	3 -> 6 [color = "black" dir="none"]
+	3 -> 7 [color = "black" dir="none"]
+	4 -> 8 [color = "black" dir="none"]
+	5 -> 8 [color = "black" dir="none"]
+}
