@@ -10,7 +10,7 @@ using namespace std;
 Graph::Graph()
 {
 	//Initialize the interation number
-	interation = 1;
+	interation = 0;
 }
 
 //Deconstructor
@@ -35,7 +35,7 @@ void Graph::openBenchmark(char* fileName)
 	//Check if the file opened
 	if (file.is_open()) {
 		//Display file opened message
-		cout << "Successfully opened the benchmark file " << fileName << endl;
+		cout << "Successfully opened the benchmark file " << fileName << endl << endl;
 	}
 	//Otherwise file didn't open
 	else {
@@ -209,11 +209,33 @@ void Graph::setGraphInfo(char* arg)
 }
 
 /*-------------------------------------------------------------------------
+Class Function:	displayStart (class Graph)
+Input(s):		None
+Output:			void (None)
+Definition:		Displays the starting partition and the initial cost to
+	the user.
+-------------------------------------------------------------------------*/
+void Graph::displayStart()
+{
+	//Display the starting partion
+	cout << "The starting partition is: " << endl;
+
+	//Display the nodes in partition one
+	partition_1->displayNodes();
+
+	//Display the nodes in partition two
+	partition_2->displayNodes();
+
+	//Display the cost of the partition
+	cout << "Cost of the partition = " << partition_1->costFunction() << endl << endl;
+}
+
+/*-------------------------------------------------------------------------
 Class Function:	displayInfo (class Graph)
 Input(s):		None
 Output:			void (None)
-Definition:		Displays the current interation number & nodes in each
-	partition.
+Definition:		Displays the current interation number, the nodes in each
+	partition, and the cost of the interation to the user.
 -------------------------------------------------------------------------*/
 void Graph::displayInfo()
 {
@@ -227,20 +249,27 @@ void Graph::displayInfo()
 	partition_2->displayNodes();
 
 	//Display the cost of the partition
-	cout << "Cost of the partition = " << partition_1->costFunction() << endl;
+	cout << "Cost of the partition = " << partition_1->costFunction() << endl << endl;
 }
 
 /*-------------------------------------------------------------------------
 Class Function:	displayFinal (class Graph)
 Input(s):		None
 Output:			void (None)
-Definition:		Displays the current interation number & nodes in each
-partition.
+Definition:		Displays the final partition (results) and 
+	cost of the partition to the user.
 -------------------------------------------------------------------------*/
 void Graph::displayFinal()
 {
-	//Display the interation number
-	cout << "Final partition after " << interation << " interations" << endl;
+	//Check if iteration is equal to one
+	if (interation == 1) {
+		//Display the interation number
+		cout << "Final partition after " << interation << " interation" << endl;
+	}
+	else {
+		//Display the interation number
+		cout << "Final partition after " << interation << " interations" << endl;
+	}
 
 	//Display the nodes in partition one
 	partition_1->displayNodes();
@@ -372,9 +401,6 @@ void Graph::calcInteration()
 			//Increment the index for the k structure
 			kIndex++;
 
-			//Display the largest gain
-			cout << "The largest gain is: " << maxGain << endl;
-
 			//Obtain nodes from partition one and partition two
 			tempNode1 = partition_1->readNode(swap1);
 			tempNode2 = partition_2->readNode(swap2);
@@ -382,10 +408,6 @@ void Graph::calcInteration()
 			//Swap the two nodes
 			partition_1->writeNode(swap1, tempNode2);
 			partition_2->writeNode(swap2, tempNode1);
-
-			//TEST
-			cout << "TEST: Swapped node " << swap1 << " with node " << swap2 << endl;
-			//consoleFreeze();
 
 			//Calculate the new D values
 			partition_1->setIE_Cost();
@@ -398,6 +420,9 @@ void Graph::calcInteration()
 		sum = 0;
 		maxSum = 0;
 		maxPosition = 0;
+
+		//Set best to true
+		best = true;
 
 		//Calculate the best move
 		for (int i = 0; i < kIndex; i++) {
@@ -436,20 +461,20 @@ void Graph::calcInteration()
 			}
 		}
 
-		//TEST
-		cout << "TEST: Swapping node " << k.P1_IDs[maxPosition] << " with node " << k.P2_IDs[maxPosition] << endl;
-		//consoleFreeze();
-
 		//Check if this is the best partition
 		if (!best) {
-			//Obtain nodes from partition one and partition two
-			tempNode1 = partition_2->readNode(k.P1_IDs[maxPosition]);
-			tempNode2 = partition_1->readNode(k.P2_IDs[maxPosition]);
 
-			//Swap the two nodes
-			partition_2->writeNode(k.P1_IDs[maxPosition], tempNode2);
-			partition_1->writeNode(k.P2_IDs[maxPosition], tempNode1);
+			//Loop to swap the nessecary nodes
+			for (int i = 0; i <= maxPosition; i++) {
+				//Obtain nodes from partition one and partition two
+				tempNode1 = partition_2->readNode(k.P1_IDs[i]);
+				tempNode2 = partition_1->readNode(k.P2_IDs[i]);
 
+				//Swap the two nodes
+				partition_2->writeNode(k.P1_IDs[i], tempNode2);
+				partition_1->writeNode(k.P2_IDs[i], tempNode1);
+
+			}
 			//Set all the nodes to unswapped
 			partition_1->unswapAll();
 			partition_2->unswapAll();
@@ -465,13 +490,15 @@ void Graph::calcInteration()
 			displayInfo();
 		}
 		else {
+			//Increment the interation number
+			interation++;
+
 			//Display final
 			displayFinal();
 		}
 
 		//Set first to true
 		first = true;
-		best = true;
 
 		//Reset the value of k index
 		kIndex = 0;

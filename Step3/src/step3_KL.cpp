@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	G.addNodeInfo();
 
 	//Display the initial setup information
-	G.displayInfo();
+	G.displayStart();
 
 	//Run the KL algorithm
 	G.calcInteration();

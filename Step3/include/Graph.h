@@ -18,6 +18,7 @@ public:
 	void openBenchmark(char*);
 	void closeBenchmark();
 	void setGraphInfo(char*);
+	void displayStart();
 	void displayInfo();
 	void displayFinal();
 	void calcInteration();
