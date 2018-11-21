@@ -82,7 +82,7 @@ void Graph::setGraphInfo(char* arg)
 	line += '\n';
 
 	//Loop through the line and count
-	for (int i = 0; i < line.size(); i++) {
+	for (unsigned int i = 0; i < line.size(); i++) {
 		//Check if the current character is a digit
 		if (isdigit(line[i])) {
 			//Check if node
@@ -107,7 +107,7 @@ void Graph::setGraphInfo(char* arg)
 	tempEdgeArray = new int[edgeLength];
 
 	//Loop through the line and add to array
-	for (int i = 0; i < line.size(); i++) {
+	for (unsigned int i = 0; i < line.size(); i++) {
 		//Check if the current character is a digit
 		if (isdigit(line[i])) {
 			//Check if node
@@ -199,6 +199,10 @@ void Graph::setGraphInfo(char* arg)
 		errorHandler(2, arg);
 	}
 
+	//Free the memory from the temp arrays
+	delete[] tempEdgeArray;
+	delete[] tempNodeArray;
+
 	//Declare partition one & partition two
 	partition_1 = new Partition(totalNodes / 2, 1);
 	partition_2 = new Partition(totalNodes / 2, 2);
@@ -227,6 +231,28 @@ void Graph::displayInfo()
 }
 
 /*-------------------------------------------------------------------------
+Class Function:	displayFinal (class Graph)
+Input(s):		None
+Output:			void (None)
+Definition:		Displays the current interation number & nodes in each
+partition.
+-------------------------------------------------------------------------*/
+void Graph::displayFinal()
+{
+	//Display the interation number
+	cout << "Final partition after " << interation << " interations" << endl;
+
+	//Display the nodes in partition one
+	partition_1->displayNodes();
+
+	//Display the nodes in partition two
+	partition_2->displayNodes();
+
+	//Display the cost of the partition
+	cout << "Cost of the final partition = " << partition_1->costFunction() << endl;
+}
+
+/*-------------------------------------------------------------------------
 Class Function:	calcInteration (class Graph)
 Input(s):		None
 Output:			void (None)
@@ -243,58 +269,217 @@ void Graph::calcInteration()
 	int gain;
 	int maxGain;
 	bool first = true;
+	Node tempNode1;
+	Node tempNode2;
+	K k;
+	int kIndex = 0;
+	bool nextInteration = true;
+	bool best = false;
+	int sum;
+	int maxSum;
+	int maxPosition;
+
+	//Setup and allocate memory for the k structure
+	k.gains = (int*)malloc(sizeof(int) * (totalNodes / 2));
+	k.P1_IDs = (int*)malloc(sizeof(int) * (totalNodes / 2));
+	k.P2_IDs = (int*)malloc(sizeof(int) * (totalNodes / 2));
 
 	//Calculate the internal & external cost of each node
 	partition_1->setIE_Cost();
 	partition_2->setIE_Cost();
 
-	//Loop through partition one to obtain IDs
-	for (int i = 0; i < (totalNodes / 2); i++) {
+	while (nextInteration == true) {
 
-		//Obtain the current node ID from partition one
-		ID1 = partition_1->getNodeID(i);
+		/*--------------------------------KL Algorithm Start-------------------------------*/
+		//Loop while there are unswapped nodes
+		while (partition_1->unswappedNode()) {
 
-		//Obtain the D value of the node from partition one
-		D1 = partition_1->getD_Value(ID1);
+			/*-------------------------Check nodes from partition one----------------------*/
+			//Loop through partition one to obtain IDs
+			for (int i = 0; i < (totalNodes / 2); i++) {
 
-		//Loop through partition two to obtain IDs
-		for (int j = 0; j < (totalNodes / 2); j++) {
+				//Check if not swapped
+				if (!partition_1->checkSwapped(i)) {
 
-			//Obtain the current node ID from partition two
-			ID2 = partition_2->getNodeID(j);
+					//Obtain the current node ID from partition one
+					ID1 = partition_1->getNodeID(i);
 
-			//Obtain the D value of the node from partition two
-			D2 = partition_2->getD_Value(ID2);
+					//Obtain the D value of the node from partition one
+					D1 = partition_1->getD_Value(ID1);
 
-			//Check to see if the nodes share an edge
-			shared = partition_1->sharedEdge(ID1, ID2);
+					/*-------------------Check nodes from partition two-------------------*/
+					//Loop through partition two to obtain IDs
+					for (int j = 0; j < (totalNodes / 2); j++) {
 
-			//Check if this is the first time through the interation
-			if (first) {
-				//Caclulate the gain
-				gain = D1 + D2 - (2 * shared);
+						//Check if not swapped
+						if (!partition_2->checkSwapped(j)) {
 
-				//Set the value of max gain
-				maxGain = gain;
+							//Obtain the current node ID from partition two
+							ID2 = partition_2->getNodeID(j);
 
-				//Set first equal to false
-				first = false;
-			}
-			else
-			{
-				//Caclulate the gain
-				gain = D1 + D2 - (2 * shared);
+							//Obtain the D value of the node from partition two
+							D2 = partition_2->getD_Value(ID2);
 
-				//Check if the new gain is better
-				if (gain > maxGain) {
-					//Set the value of max gain
-					maxGain = gain;
+							//Check to see if the nodes share an edge
+							shared = partition_1->sharedEdge(ID1, ID2);
+
+							/*-------------------Calculate the value of Gij--------------------*/
+							//Check if this is the first time through the interation
+							if (first) {
+								//Caclulate the gain
+								gain = D1 + D2 - (2 * shared);
+
+								//Set the value of max gain
+								maxGain = gain;
+
+								//Set first equal to false
+								first = false;
+
+								//Set the swap IDs
+								swap1 = ID1;
+								swap2 = ID2;
+							}
+							/*-------------------Calculate the value of Gij--------------------*/
+							else
+							{
+								//Caclulate the gain
+								gain = D1 + D2 - (2 * shared);
+
+								//Check if the new gain is better
+								if (gain > maxGain) {
+									//Set the value of max gain
+									maxGain = gain;
+
+									//Set the swap IDs
+									swap1 = ID1;
+									swap2 = ID2;
+								}
+							}
+						}
+					}
 				}
 			}
+			/*-----------------------All nodes checked for Gij-------------------------*/
+			//Mark nodes as swapped
+			partition_1->markSwapped(swap1);
+			partition_2->markSwapped(swap2);
+
+			//Set the k values for the interation
+			k.gains[kIndex] = maxGain;
+			k.P1_IDs[kIndex] = swap1;
+			k.P2_IDs[kIndex] = swap2;
+
+			//Increment the index for the k structure
+			kIndex++;
+
+			//Display the largest gain
+			cout << "The largest gain is: " << maxGain << endl;
+
+			//Obtain nodes from partition one and partition two
+			tempNode1 = partition_1->readNode(swap1);
+			tempNode2 = partition_2->readNode(swap2);
+
+			//Swap the two nodes
+			partition_1->writeNode(swap1, tempNode2);
+			partition_2->writeNode(swap2, tempNode1);
+
+			//TEST
+			cout << "TEST: Swapped node " << swap1 << " with node " << swap2 << endl;
+			//consoleFreeze();
+
+			//Calculate the new D values
+			partition_1->setIE_Cost();
+			partition_2->setIE_Cost();
+
+			//Set first to true
+			first = true;
 		}
+		//Set values equal to zero
+		sum = 0;
+		maxSum = 0;
+		maxPosition = 0;
+
+		//Calculate the best move
+		for (int i = 0; i < kIndex; i++) {
+			//Set the value of some
+			sum += k.gains[i];
+
+			//Check if the sum is greater than zero
+			if (sum >= 1) {
+				//Check if this is the first time being greater than zero
+				if (first) {
+					//Maintain the maximum sum and its position
+					maxSum = sum;
+					maxPosition = i;
+
+					//Set best to false
+					best = false;
+
+					//Set first to false
+					first = false;
+
+					//Set nextInteration to true
+					nextInteration = true;
+				}
+				else {
+					//Check if the current sum is greater than max sum
+					if (sum > maxSum) {
+						//Maintain the maximum sum and its position
+						maxSum = sum;
+						maxPosition = i;
+					}
+				}
+			}
+			if (best) {
+				//Set next interation to false
+				nextInteration = false;
+			}
+		}
+
+		//TEST
+		cout << "TEST: Swapping node " << k.P1_IDs[maxPosition] << " with node " << k.P2_IDs[maxPosition] << endl;
+		//consoleFreeze();
+
+		//Check if this is the best partition
+		if (!best) {
+			//Obtain nodes from partition one and partition two
+			tempNode1 = partition_2->readNode(k.P1_IDs[maxPosition]);
+			tempNode2 = partition_1->readNode(k.P2_IDs[maxPosition]);
+
+			//Swap the two nodes
+			partition_2->writeNode(k.P1_IDs[maxPosition], tempNode2);
+			partition_1->writeNode(k.P2_IDs[maxPosition], tempNode1);
+
+			//Set all the nodes to unswapped
+			partition_1->unswapAll();
+			partition_2->unswapAll();
+
+			//Calculate the new D values
+			partition_1->setIE_Cost();
+			partition_2->setIE_Cost();
+
+			//Increment the interation number
+			interation++;
+
+			//Display the nodes
+			displayInfo();
+		}
+		else {
+			//Display final
+			displayFinal();
+		}
+
+		//Set first to true
+		first = true;
+		best = true;
+
+		//Reset the value of k index
+		kIndex = 0;
 	}
-	//Display the largest gain
-	cout << "The largest gain is: " << maxGain << endl;
+	//Free the memory for the k structure
+	free(k.gains);
+	free(k.P1_IDs);
+	free(k.P2_IDs);
 }
 
 /*-------------------------------------------------------------------------
@@ -327,6 +512,11 @@ void Graph::addNodeInfo()
 	int lineIndex = 0;
 	int intIndex = 0;
 	bool partition1 = true;
+	int position1 = 0;
+	int position2 = position1;
+	int currentDigit;
+	int multiplier;
+	int subMult;
 	int* temp;
 
 	//Read each line of the benchmark file
@@ -335,31 +525,78 @@ void Graph::addNodeInfo()
 		line += '\n';
 
 		//Loop through the line and count the number of adjacent edges
-		for (int i = 0; i < line.size(); i++) {
+		for (unsigned int i = 0; i < line.size(); i++) {
 			//Check if the current character is a digit
-			if (isdigit(line[i])) {
-				//Increament the degree count for the current node
-				degreeCount++;
+			if (!isdigit(line[i])) {
+
+				//Check to make sure current character isn't a tab
+				if (line[i] != '\t') {
+					//Increament the degree count for the current node
+					degreeCount++;
+				}
 			}
 		}
 
-		//Initialize the temp array of connections
+		//Allocate memory to the temp array of connections
 		temp = new int[degreeCount];
 
 		//Loop through the line and count the number of adjacent edges
-		for (int i = 0; i < line.size(); i++) {
-			//Check if the current character is a digit
-			if (isdigit(line[i])) {
-				//Add the connection to the temp array
-				temp[intIndex] = (int)line[i] - 48;
+		for (unsigned int i = 0; i < line.size(); i++) {
+			if (line[i] != '\t') {
+				//Check if the current character is a digit
+				if (isdigit(line[i])) {
+					//Increment position one
+					position1++;
+				}
+				//Otherwise on a digit
+				else {
+					//Calculate the length of the current digit
+					multiplier = position1 - position2;
 
-				//Increament the integer index
-				intIndex++;
+					//Calculate the subMult
+					subMult = multiplier - 1;
+
+					//Set current digit to zero
+					currentDigit = 0;
+
+					//Loop to obtain the digit
+					for (int j = position2; j < position1; j++) {
+						//Check if the multiplier is equal to zero
+						if (subMult == 0) {
+							//Obtain the current digit
+							currentDigit = (int)line[j] - 48;
+						}
+						else {
+							//Check if last digit
+							if (j + 1 == position1) {
+								//Add the current digit
+								currentDigit = currentDigit + ((int)line[j] - 48);
+							}
+							else {
+								//Add the current digit
+								currentDigit = currentDigit + ((int)line[j] - 48) * (10 * (multiplier - subMult));
+							}
+						}
+						//Increment subMult
+						subMult++;
+					}
+					//Add the connection value to the temp array
+					temp[intIndex] = currentDigit;
+
+					//Increament the integer index
+					intIndex++;
+
+					//Increment position one
+					position1++;
+
+					//Set position two equal to position one
+					position2 = position1;
+				}
 			}
 		}
 
 		//Check the partition of the node
-		if (lineIndex == totalNodes/2) {
+		if (lineIndex == totalNodes / 2) {
 			//Negation of halfway complete
 			partition1 = !partition1;
 		}
@@ -372,13 +609,18 @@ void Graph::addNodeInfo()
 		//Otherwise it's partition two
 		else {
 			//Add degree information to the current node
-			partition_2->setNodeDegree(lineIndex - (totalNodes/2), degreeCount, temp);
+			partition_2->setNodeDegree(lineIndex - (totalNodes / 2), degreeCount, temp);
 		}
 
-		//Reset the counters and increment unique ID number
+		//Cleanup counters and local variables
 		degreeCount = 0;
 		intIndex = 0;
+		position1 = 0;
+		position2 = position1;
 		lineIndex++;
+
+		//Delete the allocated memory
+		delete[] temp;
 	}
 }
 

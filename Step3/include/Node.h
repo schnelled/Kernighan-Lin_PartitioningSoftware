@@ -13,6 +13,9 @@ public:
 	void setIE(int, int);
 	void setD();
 	int getD();
+	void mark();
+	void unmark();
+	bool getSwapped();
 
 private:
 	int id;

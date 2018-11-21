@@ -18,7 +18,7 @@ Node::Node()
 Node::~Node()
 {
 	//Delete the connections
-	delete[] connections;
+	//delete[] connections;
 }
 
 /*---------------------------------------------------------------
@@ -135,4 +135,40 @@ int Node::getD()
 {
 	//Return the D value
 	return D;
+}
+
+/*---------------------------------------------------------------
+Class function:	mark (Node class)
+Input(s):		None
+Output:			void (none)
+Description:	Marks the node as being swapped
+---------------------------------------------------------------*/
+void Node::mark()
+{
+	//Set swapped to true
+	swapped = true;
+}
+
+/*---------------------------------------------------------------
+Class function:	mark (Node class)
+Input(s):		None
+Output:			void (none)
+Description:	Marks the node as being unswapped
+---------------------------------------------------------------*/
+void Node::unmark()
+{
+	//Set swapped to true
+	swapped = false;
+}
+
+/*---------------------------------------------------------------
+Class function:	getSwapped (Node class)
+Input(s):		None
+Output:			bool - Swapped value
+Description:	Obtain the swapped value from the node.
+---------------------------------------------------------------*/
+bool Node::getSwapped()
+{
+	//Return the D value
+	return swapped;
 }

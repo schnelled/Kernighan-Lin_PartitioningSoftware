@@ -4,6 +4,12 @@
 
 using namespace std;
 
+struct K {
+	int* P1_IDs;
+	int* P2_IDs;
+	int* gains;
+};
+
 class Graph
 {
 public:
@@ -13,6 +19,7 @@ public:
 	void closeBenchmark();
 	void setGraphInfo(char*);
 	void displayInfo();
+	void displayFinal();
 	void calcInteration();
 	void addNodes();
 	void addNodeInfo();
