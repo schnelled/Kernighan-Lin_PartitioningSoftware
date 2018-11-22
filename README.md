@@ -26,12 +26,26 @@ Program will read an input file and print out a partition in a specified format
   
   - [x] **B.** Update your output formate to show "cost of the partition".
 
-### Step 3(step3_KL.cpp & KL.cpp): Expand step 2 to include the following ###
+### Step 3(step3_KL.cpp & KL_Algorithm.cpp): Expand step 2 to include the following ###
 
-  - [ ] **A.** Calculate the internal & external costs for all of the vertices in both partitions.
+  - [x] **A.** Calculate the internal & external costs for all of the vertices in both partitions.
   
-  - [ ] **B.** Calculate the D values for each node
+  - [x] **B.** Calculate the D values for each node
   
-  - [ ] **C.** Calculate the Gain values for each possible "move".
+  - [x] **C.** Calculate the Gain values for each possible "move".
   
-  - [ ] **D.** In addition to the cost of the partition, print the largest Gain value.
+  - [x] **D.** In addition to the cost of the partition, print the largest Gain value.
+  
+### Running Program:
+
+**Step1:** cd KL_Algorithm/src
+
+**Step2:** make
+
+**Step3:** ./KL_Algorithm.o <benchmarkFile.txt>
+
+Example: ./KL_Algorithm.o ../../Benchmark/ClassEx/ClassEx.txt
+
+**Step4 (once finished):** make clean
+  
+**Note:** As of November 21, 2018 the algorithm is function and tested using the provided benchmarks on Linux Ubuntu 18.04.1 LST and will be tested on more systems in the near future.
